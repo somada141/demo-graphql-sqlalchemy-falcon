@@ -1,8 +1,9 @@
 # coding=utf-8
 
+from typing import Union
+
 import graphene
 from graphene_sqlalchemy import SQLAlchemyObjectType
-import sqlalchemy.orm
 
 from demo.orm import Author
 from demo.orm import Book
@@ -26,15 +27,60 @@ class TypeAuthorBook(SQLAlchemyObjectType):
 
 class Query(graphene.ObjectType):
 
-    robert = graphene.Field(TypeAuthor)
+    author = graphene.Field(
+        TypeAuthor,
+        author_id=graphene.Argument(type=graphene.Int, required=False),
+        name_first=graphene.Argument(type=graphene.String, required=False),
+        name_last=graphene.Argument(type=graphene.String, required=False),
+    )
 
-    def resolve_robert(self, info):
+    books = graphene.List(
+        of_type=TypeBook,
+        title=graphene.Argument(type=graphene.String, required=False),
+        year=graphene.Argument(type=graphene.Int, required=False),
+    )
+
+    @staticmethod
+    def resolve_author(
+        args,
+        info,
+        author_id: Union[int, None] = None,
+        name_first: Union[str, None] = None,
+        name_last: Union[str, None] = None,
+    ):
         query = TypeAuthor.get_query(info=info)
-        query = query.filter(Author.name_first == "Robert")
+
+        if author_id:
+            query = query.filter(Author.author_id == author_id)
+
+        if name_first:
+            query = query.filter(Author.name_first == name_first)
+
+        if name_last:
+            query = query.filter(Author.name_last == name_last)
 
         robert = query.first()
 
         return robert
+
+    @staticmethod
+    def resolve_books(
+        args,
+        info,
+        title: Union[str, None] = None,
+        year: Union[int, None] = None,
+    ):
+        query = TypeBook.get_query(info=info)
+
+        if title:
+            query = query.filter(Book.title == title)
+
+        if year:
+            query = query.filter(Book.year == year)
+
+        books = query.all()
+
+        return books
 
 
 schema = graphene.Schema(
