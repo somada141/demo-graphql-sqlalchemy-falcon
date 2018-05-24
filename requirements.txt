@@ -2,3 +2,4 @@ SQLAlchemy==1.2.7
 graphene==2.1
 graphene-sqlalchemy==2.0.0
 falcon==1.4.1
+gunicorn==19.8.1
