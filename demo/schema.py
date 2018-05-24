@@ -59,9 +59,9 @@ class Query(graphene.ObjectType):
         if name_last:
             query = query.filter(Author.name_last == name_last)
 
-        robert = query.first()
+        author = query.first()
 
-        return robert
+        return author
 
     @staticmethod
     def resolve_books(
