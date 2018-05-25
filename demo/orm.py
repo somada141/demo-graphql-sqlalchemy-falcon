@@ -1,9 +1,20 @@
 # coding=utf-8
 
+import enum
+
 import sqlalchemy.orm
 
 from demo import data
 from demo.orm_base import Base, OrmBaseMixin
+
+
+class CoverTitleColor(enum.Enum):
+    YELLOW = "yellow"
+    RED = "red"
+    BLUE = "blue"
+    ORANGE = "orange"
+    WHITE = "white"
+    PURPLE = "purple"
 
 
 class Author(Base, OrmBaseMixin):
@@ -52,6 +63,11 @@ class Book(Base, OrmBaseMixin):
     cover_artist = sqlalchemy.Column(
         sqlalchemy.types.Unicode(length=80),
         nullable=True,
+    )
+
+    cover_title_color = sqlalchemy.Column(
+        sqlalchemy.types.Enum(CoverTitleColor),
+        nullable=False
     )
 
     authors = sqlalchemy.orm.relationship(
@@ -114,6 +130,9 @@ if __name__ == "__main__":
         book_obj.title = _book_item["title"]
         book_obj.year = _book_item["year"]
         book_obj.cover_artist = _book_item["cover_artist"]
+        book_obj.cover_title_color = CoverTitleColor(
+            _book_item["cover_title_color"]
+        )
         book_objs.append(book_obj)
     session.add_all(book_objs)
     session.commit()
