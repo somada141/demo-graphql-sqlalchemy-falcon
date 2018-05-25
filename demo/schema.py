@@ -3,26 +3,14 @@
 from typing import Union
 
 import graphene
-from graphene_sqlalchemy import SQLAlchemyObjectType
 
 from demo.orm import Author
 from demo.orm import Book
-from demo.orm import AuthorBook
-
-
-class TypeAuthor(SQLAlchemyObjectType):
-    class Meta:
-        model = Author
-
-
-class TypeBook(SQLAlchemyObjectType):
-    class Meta:
-        model = Book
-
-
-class TypeAuthorBook(SQLAlchemyObjectType):
-    class Meta:
-        model = AuthorBook
+from demo.schema_types import TypeAuthor
+from demo.schema_types import TypeBook
+from demo.schema_types import TypeAuthorBook
+from demo.schema_types import TypeStats
+from demo.schema_types import TypeCountBooksCoverArtist
 
 
 class Query(graphene.ObjectType):
@@ -39,6 +27,12 @@ class Query(graphene.ObjectType):
         title=graphene.Argument(type=graphene.String, required=False),
         year=graphene.Argument(type=graphene.Int, required=False),
     )
+
+    stats = graphene.Field(type=TypeStats)
+
+    @staticmethod
+    def resolve_stats(args, info):
+        return TypeStats
 
     @staticmethod
     def resolve_author(
@@ -89,5 +83,7 @@ schema = graphene.Schema(
         TypeAuthor,
         TypeBook,
         TypeAuthorBook,
+        TypeStats,
+        TypeCountBooksCoverArtist
     ]
 )
