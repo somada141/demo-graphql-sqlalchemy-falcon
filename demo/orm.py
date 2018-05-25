@@ -49,6 +49,11 @@ class Book(Base, OrmBaseMixin):
         nullable=False,
     )
 
+    cover_artist = sqlalchemy.Column(
+        sqlalchemy.types.Unicode(length=80),
+        nullable=True,
+    )
+
     authors = sqlalchemy.orm.relationship(
         argument="Author",
         secondary="author_books",
@@ -108,6 +113,7 @@ if __name__ == "__main__":
         book_obj.book_id = _book_item["book_id"]
         book_obj.title = _book_item["title"]
         book_obj.year = _book_item["year"]
+        book_obj.cover_artist = _book_item["cover_artist"]
         book_objs.append(book_obj)
     session.add_all(book_objs)
     session.commit()
