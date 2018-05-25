@@ -236,3 +236,43 @@ Response:
   }
 }
 ```
+
+#### Get number of books by cover-artist
+
+Query:
+
+```
+query getCountBooksByCoverArtist{
+  stats {
+    countBooksByCoverArtist {
+      coverArtist,
+      countBooks
+    }
+  }
+}
+```
+
+Response:
+
+```
+{
+  "data": {
+    "stats": {
+      "countBooksByCoverArtist": [
+        {
+          "coverArtist": null,
+          "countBooks": 1
+        },
+        {
+          "coverArtist": "Darrell K. Sweet",
+          "countBooks": 12
+        },
+        {
+          "coverArtist": "Michael Whelan",
+          "countBooks": 1
+        }
+      ]
+    }
+  }
+}
+```
