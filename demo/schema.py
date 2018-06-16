@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from typing import Union
+from typing import List, Dict, Union
 
 import graphql
 import graphene
@@ -46,6 +46,7 @@ class Query(graphene.ObjectType):
         name_first: Union[str, None] = None,
         name_last: Union[str, None] = None,
     ):
+
         query = TypeAuthor.get_query(info=info)
 
         if author_id:
