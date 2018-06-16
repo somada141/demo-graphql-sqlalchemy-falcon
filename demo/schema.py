@@ -2,6 +2,7 @@
 
 from typing import Union
 
+import graphql
 import graphene
 
 from demo.orm import Author
@@ -31,13 +32,16 @@ class Query(graphene.ObjectType):
     stats = graphene.Field(type=TypeStats)
 
     @staticmethod
-    def resolve_stats(args, info):
+    def resolve_stats(
+        args: Dict,
+        info: graphql.execution.base.ResolveInfo,
+    ):
         return TypeStats
 
     @staticmethod
     def resolve_author(
-        args,
-        info,
+        args: Dict,
+        info: graphql.execution.base.ResolveInfo,
         author_id: Union[int, None] = None,
         name_first: Union[str, None] = None,
         name_last: Union[str, None] = None,
@@ -59,8 +63,8 @@ class Query(graphene.ObjectType):
 
     @staticmethod
     def resolve_books(
-        args,
-        info,
+        args: Dict,
+        info: graphql.execution.base.ResolveInfo,
         title: Union[str, None] = None,
         year: Union[int, None] = None,
     ):

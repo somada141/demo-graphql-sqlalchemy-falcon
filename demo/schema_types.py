@@ -1,7 +1,8 @@
 # coding=utf-8
 
-from typing import List
+from typing import List, Dict
 
+import graphql
 import graphene
 from graphene_sqlalchemy import SQLAlchemyObjectType
 import sqlalchemy.orm
@@ -40,8 +41,8 @@ class TypeStats(graphene.ObjectType):
 
     @staticmethod
     def resolve_count_books_by_cover_artist(
-        args,
-        info
+        args: Dict,
+        info: graphql.execution.base.ResolveInfo,
     ) -> List[TypeCountBooksCoverArtist]:
         # Retrieve the session out of the context as the `get_query` method
         # automatically selects the model.
