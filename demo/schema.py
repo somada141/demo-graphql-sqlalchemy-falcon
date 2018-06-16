@@ -12,6 +12,7 @@ from demo.schema_types import TypeBook
 from demo.schema_types import TypeAuthorBook
 from demo.schema_types import TypeStats
 from demo.schema_types import TypeCountBooksCoverArtist
+from demo.utils import apply_requested_fields
 
 
 class Query(graphene.ObjectType):
@@ -58,6 +59,9 @@ class Query(graphene.ObjectType):
         if name_last:
             query = query.filter(Author.name_last == name_last)
 
+        # Limit query to the requested fields only.
+        query = apply_requested_fields(info=info, query=query, orm_class=Author)
+
         author = query.first()
 
         return author
@@ -76,6 +80,9 @@ class Query(graphene.ObjectType):
 
         if year:
             query = query.filter(Book.year == year)
+
+        # Limit query to the requested fields only.
+        query = apply_requested_fields(info=info, query=query, orm_class=Book)
 
         books = query.all()
 
