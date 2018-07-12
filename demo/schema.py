@@ -12,6 +12,7 @@ from demo.schema_types import TypeBook
 from demo.schema_types import TypeAuthorBook
 from demo.schema_types import TypeStats
 from demo.schema_types import TypeCountBooksCoverArtist
+from demo.schema_mutations import MutationAuthorCreate
 from demo.utils import apply_requested_fields
 
 
@@ -89,8 +90,13 @@ class Query(graphene.ObjectType):
         return books
 
 
+class Mutation(graphene.ObjectType):
+    create_author = MutationAuthorCreate.Field()
+
+
 schema = graphene.Schema(
     query=Query,
+    mutation=Mutation,
     types=[
         TypeAuthor,
         TypeBook,
