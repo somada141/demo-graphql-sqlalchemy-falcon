@@ -276,3 +276,38 @@ Response:
   }
 }
 ```
+
+#### Add new author
+
+Query:
+
+```
+mutation createAuthor{
+  createAuthor(author: {
+    nameFirst: "First Name",
+    nameLast: "Last Name"
+  }) {
+    author {
+      authorId
+      nameFirst
+      nameLast
+    }
+  }
+}
+```
+
+Response:
+
+```
+{
+  "data": {
+    "createAuthor": {
+      "author": {
+        "authorId": "3",
+        "nameFirst": "First Name",
+        "nameLast": "Last Name"
+      }
+    }
+  }
+}
+```
